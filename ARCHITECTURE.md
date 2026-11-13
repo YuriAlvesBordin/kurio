@@ -131,9 +131,29 @@ O `RealtimeController` aplica eventos ao cache e é a única parte que o faz.
 - Cenários configuráveis e reproduzíveis (latência com semente fixa, timeouts, offline, erros HTTP, expiração de sessão, conflitos, validação, cupom, mudança de preço, esgotamento, timeout após criar pedido, pagamento confirmado e recusado). Veja a tabela no README.
 - Dois usuários fictícios com dados distintos (carteiras, favoritos e pedidos).
 
+## Acessibilidade e assets
+
+Ajustes de acessibilidade feitos em relação ao layout do Figma:
+
+- Link "Ir para o conteúdo" no início da página, visível só com o foco, e landmarks `banner`, `navigation` e `main`.
+- Anel de foco visível (`:focus-visible`) global em todos os controles.
+- Diálogos (login, cadastro e zoom da galeria) usam Radix Dialog: foco preso, `Escape` fecha e o foco volta ao elemento que abriu. No mobile a navegação é uma barra inferior fixa, sem drawer.
+- Todo campo de formulário tem `label` associado, `aria-invalid` e `aria-describedby` apontando para a mensagem de erro, inclusive para erros devolvidos pela API.
+- Imagens de NFT têm texto alternativo com nome e token. Ícones decorativos usam `alt=""` e os ícones que são controles recebem `aria-label` no botão ou link.
+- Feedback acessível: toasts do Sonner (região `aria-live`), `role="status"` para o estado do pedido pendente, disponibilidade no detalhe e faixa de reconexão, e `role="alert"` para pedido recusado e erros.
+- Erros, esgotado e cotação alterada são comunicados por mensagem de texto, não apenas por cor.
+- Skeletons usam shimmer com dimensões fixas para evitar deslocamento de layout e a animação é desligada com `prefers-reduced-motion`.
+- O botão de diminuir quantidade fica desabilitado em 1 e os controles de quantidade têm nome acessível ("Aumentar quantidade" e "Diminuir quantidade").
+
+Assets:
+
+- As quatro ilustrações fornecidas (`ape-varsity`, `ape-hoodie`, `ape-blazer` e `ape-headphones`) são servidas localmente em WebP com 320, 640 e 1254 px via `srcset`. As demais fixtures reutilizam essas artes, porque o desafio fornece só quatro. Os ícones são SVGs locais em `public/assets/icons`.
+- A fonte Roboto Mono Variable é empacotada pelo `@fontsource-variable/roboto-mono`, sem requisições a CDNs, então o app roda offline e o Lighthouse mede a fonte real.
+- Não há assets externos: tudo o que a interface carrega vem do próprio repositório.
+
 ## Limitações conhecidas
 
-- O LCP e o TBT no Lighthouse mobile ficam fora da meta de Performance 90 por causa do custo do MSW no navegador. Veja o README.
+- A Performance no Lighthouse mobile fica abaixo da meta de 90 (veja o README e `reports/lighthouse/summary.md`). A causa é o JavaScript do caminho crítico, com o bundle do app e o MSW rodando no navegador sob CPU 4 vezes mais lenta, que eleva o TBT e o LCP. O desktop atinge todas as metas.
 - O estado dos mocks vive no `localStorage` do navegador, então não é compartilhado entre dispositivos.
 - O pagamento é simulado. Não há integração com carteiras ou blockchain.
 - Provedores de login social, "Esqueceu a senha?", favoritos no menu móvel, escaneamento e menus de contexto fora do escopo mostram o aviso "Em breve" e não fingem sucesso.
