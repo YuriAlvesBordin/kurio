@@ -21,10 +21,22 @@ function median(values) {
 }
 
 /**
+ * Stops the preview server and the vite process that npx spawned, so no server outlives the audit.
+ * @param child preview process started as its own process group
+ */
+function stopServer(child) {
+  try {
+    process.kill(-child.pid)
+  } catch {
+    child.kill()
+  }
+}
+
+/**
  * Starts vite preview for the production build and waits until it answers.
  */
 async function startServer() {
-  const child = spawn('npx', ['vite', 'preview', '--host', '127.0.0.1', '--port', String(config.port), '--strictPort'], { stdio: 'ignore' })
+  const child = spawn('npx', ['vite', 'preview', '--host', '127.0.0.1', '--port', String(config.port), '--strictPort'], { stdio: 'ignore', detached: true })
   for (let attempt = 0; attempt < 60; attempt += 1) {
     try {
       const response = await fetch(base)
@@ -33,7 +45,7 @@ async function startServer() {
       await sleep(500)
     }
   }
-  child.kill()
+  stopServer(child)
   throw new Error('Preview server did not start. Run npm run build first.')
 }
 
@@ -103,7 +115,7 @@ try {
     }
   }
 } finally {
-  server.kill()
+  stopServer(server)
 }
 
 const rows = summary.map((entry) => {
