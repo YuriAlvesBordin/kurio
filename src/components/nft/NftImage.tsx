@@ -7,19 +7,20 @@ interface NftImageProps {
   size?: 320 | 640 | 1254
   className?: string
   priority?: boolean
+  sizes?: string
 }
 
 /**
  * Responsive artwork image with explicit dimensions to avoid layout shift.
  * @param props artwork id, alt text and display options
  */
-export function NftImage({ artwork, alt, size = 640, className, priority = false }: NftImageProps) {
+export function NftImage({ artwork, alt, size = 640, className, priority = false, sizes }: NftImageProps) {
   const base = `/assets/img/${artwork}`
   return (
     <img
       src={`${base}-${size}.webp`}
       srcSet={`${base}-320.webp 320w, ${base}-640.webp 640w, ${base}-1254.webp 1254w`}
-      sizes={size === 1254 ? '(min-width: 1024px) 560px, 100vw' : '(min-width: 1024px) 320px, 50vw'}
+      sizes={sizes ?? (size === 1254 ? '(min-width: 1024px) 560px, 100vw' : '(min-width: 1024px) 320px, 50vw')}
       alt={alt}
       width={640}
       height={640}

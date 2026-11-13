@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams, useRouter } from '@tanstack/react-router'
-import { toast } from 'sonner'
+import { toast } from '@/lib/toast'
 import type { EditionId, NftDetail } from '@/api/contracts'
 import { ClientError } from '@/api/errors'
 import { Icon } from '@/components/Icon'

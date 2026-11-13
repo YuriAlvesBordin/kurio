@@ -2,12 +2,13 @@ import { Outlet, createRootRoute, createRoute, createRouter, lazyRouteComponent,
 import { lazy, Suspense, useEffect } from 'react'
 import { Link } from '@tanstack/react-router'
 import { Shell } from '@/components/layout/Shell'
-import { Toaster } from '@/components/ui/toaster'
 import { Button } from '@/components/ui/button'
 import { authStore } from '@/features/auth/authStore'
 import { HomePage } from '@/features/catalog/HomePage'
 import { RealtimeProvider } from '@/realtime/RealtimeProvider'
 import { RequireAuth } from './RequireAuth'
+
+const Toaster = lazy(() => import('@/components/ui/toaster').then((module) => ({ default: module.Toaster })))
 import { validateAuthSearch, validateCatalogSearch, withoutAuthParams } from './search'
 
 /**
@@ -40,7 +41,9 @@ function RootLayout() {
           <AuthDialog />
         </Suspense>
       ) : null}
-      <Toaster />
+      <Suspense fallback={null}>
+        <Toaster />
+      </Suspense>
     </>
   )
 }

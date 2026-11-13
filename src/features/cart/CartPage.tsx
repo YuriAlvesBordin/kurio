@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { toast } from 'sonner'
+import { toast } from '@/lib/toast'
 import type { CartItem } from '@/api/contracts'
 import { Icon } from '@/components/Icon'
 import { BackHeader } from '@/components/layout/BackHeader'

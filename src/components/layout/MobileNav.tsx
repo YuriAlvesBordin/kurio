@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { toast } from 'sonner'
+import { toast } from '@/lib/toast'
 import { Icon } from '@/components/Icon'
 import { useAuth } from '@/features/auth/authStore'
 import { useOpenAuth } from '@/features/auth/useOpenAuth'

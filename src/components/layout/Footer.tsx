@@ -1,5 +1,5 @@
 import { Icon } from '@/components/Icon'
-import { toast } from 'sonner'
+import { toast } from '@/lib/toast'
 import { useState } from 'react'
 
 const COLUMNS = [

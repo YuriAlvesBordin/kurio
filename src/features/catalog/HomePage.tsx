@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useSearch } from '@tanstack/react-router'
-import { toast } from 'sonner'
+import { toast } from '@/lib/toast'
+import { useIsDesktop } from '@/hooks/useMediaQuery'
 import { sortIds, type SortId } from '@/api/contracts'
 import { Icon } from '@/components/Icon'
 import { Shell } from '@/components/layout/Shell'
@@ -69,11 +70,13 @@ export function HomePage() {
     return () => window.clearTimeout(handle)
   }, [text])
 
+  const desktop = useIsDesktop()
   const data = query.data
   const filtered = Boolean(search.q || search.collections || search.networks || search.min || search.max)
 
   return (
     <Shell tab="home">
+      {desktop ? (
       <section className="page-container mt-8 hidden md:block" aria-labelledby="hero-title">
         <div className="relative flex h-[450px] items-start justify-between pl-10 pt-[43px]">
           <div className="flex w-[600px] max-w-full flex-col">
@@ -94,7 +97,7 @@ export function HomePage() {
           </div>
         </div>
       </section>
-
+      ) : (
       <div className="px-6 pt-10 md:hidden">
         <div className="flex gap-[7px]">
           <div role="search" className="flex h-[45px] min-w-0 flex-1 items-center gap-2.5 rounded-xl bg-card px-3">
@@ -125,8 +128,10 @@ export function HomePage() {
           </div>
         </div>
       </div>
+      )}
 
       <section id="catalogo" className="page-container max-md:!px-0 mt-[13px] grid gap-8 scroll-mt-4 md:mt-24 md:grid-cols-[minmax(0,230px)_minmax(0,1fr)] lg:grid-cols-[310px_minmax(0,1fr)] lg:gap-12" aria-label="Catálogo">
+        {desktop ? (
         <aside className="hidden md:block" aria-label="Filtros">
           <Filters search={search} data={data} onChange={(patch) => update(patch)} idPrefix="desktop" />
           <div className="mt-6 h-[470px] bg-[#271a10] pt-8">
@@ -137,6 +142,7 @@ export function HomePage() {
             </Link>
           </div>
         </aside>
+        ) : null}
 
         <div className="min-w-0">
           <div className="mb-[17px] flex flex-wrap items-center justify-between gap-3 px-6 md:mb-[26px] md:px-0">
@@ -236,6 +242,7 @@ export function HomePage() {
         </div>
       </section>
 
+      {desktop ? (
       <section className="page-container mt-24 hidden gap-7 md:grid md:grid-cols-2" aria-label="Destaques">
         {([
           { artwork: 'ape-varsity', title: 'Lançamentos gênesis de edição limitada', text: 'Colecione edições escassas diretamente dos criadores antes da revelação pública.', titleWidth: 206, textWidth: 263, pad: 30 },
@@ -257,7 +264,9 @@ export function HomePage() {
           </div>
         ))}
       </section>
+      ) : null}
 
+      {desktop ? (
       <section id="diario" className="page-container mt-24 hidden scroll-mt-4 md:block" aria-labelledby="diario-title">
         <h2 id="diario-title" className="text-center text-[28px] font-bold leading-[37px] text-fg-strong">
           Diário da Cunhagem
@@ -281,6 +290,7 @@ export function HomePage() {
           ))}
         </div>
       </section>
+      ) : null}
 
       <Dialog open={filtersOpen} onOpenChange={setFiltersOpen}>
         <DialogContent className="inset-x-0 bottom-0 top-auto h-auto max-h-[85dvh] translate-x-0 translate-y-0 left-0 md:hidden">

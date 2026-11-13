@@ -25,7 +25,7 @@ export function NftCard({ nft, priority = false }: { nft: NftSummary; priority?:
       <Link to="/nft/$id" params={{ id: nft.id }} className="block" aria-label={`${title}, ${nft.priceEth} ETH`}>
         <div className="relative rounded-[20px] bg-card px-1 pb-5 pt-3 md:rounded-none md:px-1 md:py-[25px]">
           {nft.badge ? <span className="absolute left-3 top-3 z-10 bg-primary px-3 py-1 text-xs font-bold text-ink md:hidden">{nft.badge}</span> : null}
-          <NftImage artwork={nft.image} alt={`Arte do NFT ${title}`} size={640} className="rounded-2xl md:rounded-2xl" priority={priority} />
+          <NftImage artwork={nft.image} alt={`Arte do NFT ${title}`} size={640} sizes="(min-width: 1024px) 320px, (min-width: 768px) 50vw, calc(50vw - 40px)" className="rounded-2xl md:rounded-2xl" priority={priority} />
         </div>
         <div className="px-2 pt-[9px] md:px-0">
           <h3 className="text-sm text-fg md:text-base md:leading-4">{title}</h3>
