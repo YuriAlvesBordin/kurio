@@ -10,6 +10,29 @@ import { formatEthLabel } from '@/lib/eth'
 import { cn } from '@/lib/utils'
 
 const MAX_ITEMS = 15
+const SCROLL_MS = 650
+
+/**
+ * Scrolls a snap track with an ease in out curve. Snapping is switched off while the animation runs, because the
+ * browser would otherwise fight every frame and make the motion stutter.
+ * @param track scroll container
+ * @param left target scrollLeft
+ */
+function animateScroll(track: HTMLElement, left: number) {
+  const from = track.scrollLeft
+  const delta = left - from
+  if (!delta) return
+  const start = performance.now()
+  track.style.scrollSnapType = 'none'
+  const frame = (now: number) => {
+    const t = Math.min(1, (now - start) / SCROLL_MS)
+    const eased = t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2
+    track.scrollLeft = from + delta * eased
+    if (t < 1) requestAnimationFrame(frame)
+    else track.style.scrollSnapType = ''
+  }
+  requestAnimationFrame(frame)
+}
 
 /**
  * Catalog items for the related carousels: two catalog pages, minus the current NFT, rotated by an offset so each page
@@ -70,7 +93,9 @@ export function RelatedRow({ id, title, items, pending, spacing = 'detail', clas
     const list = track.current
     if (!list) return
     const next = Math.min(pages - 1, Math.max(0, target))
-    list.scrollTo({ left: next * perView * step(), behavior: reduced ? 'auto' : 'smooth' })
+    const left = next * perView * step()
+    if (reduced) list.scrollLeft = left
+    else animateScroll(list, left)
     setPage(next)
   }
 
