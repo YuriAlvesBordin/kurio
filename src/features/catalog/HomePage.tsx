@@ -78,10 +78,10 @@ export function HomePage() {
     <Shell tab="home">
       {desktop ? (
       <section className="page-container mt-8 hidden md:block" aria-labelledby="hero-title">
-        <div className="relative flex h-[450px] items-start justify-between pl-10 pt-[43px]">
-          <div className="flex w-[600px] max-w-full flex-col">
+        <div className="relative flex items-start justify-between gap-6 pl-10 pt-[43px] md:min-h-[340px] lg:h-[450px] lg:gap-0">
+          <div className="flex min-w-0 flex-1 flex-col lg:w-[600px] lg:flex-none">
             <p className="text-base leading-4 tracking-[0.015em] text-fg">Bem-vindo à Kurio</p>
-            <h1 id="hero-title" className="mt-2 text-[44px] font-bold leading-[70px] tracking-[-0.014em] text-fg-strong">
+            <h1 id="hero-title" className="mt-2 text-[30px] font-bold leading-[44px] tracking-[-0.014em] lg:text-[44px] lg:leading-[70px] text-fg-strong">
               SEJA DONO DO FUTURO
               <br />
               DA ARTE DIGITAL
@@ -92,7 +92,7 @@ export function HomePage() {
             </Button>
           </div>
           <img src="/assets/icons/hero-dots.svg" alt="" width={40} height={8} className="absolute left-[600px] top-[399px] hidden lg:block" />
-          <div className="-mt-[43px] h-[450px] w-[450px] shrink-0">
+          <div className="-mt-[43px] h-[300px] w-[300px] shrink-0 lg:h-[450px] lg:w-[450px]">
             <NftImage artwork="ape-varsity" alt="Macaco de óculos escuros e jaqueta verde, arte em destaque" size={640} priority className="h-full rounded-[20px]" />
           </div>
         </div>
@@ -108,13 +108,13 @@ export function HomePage() {
             <Icon name="filter" size={22} />
           </button>
         </div>
-        <div className="relative mt-4 h-[190px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#6b482c] to-[#46301f]">
+        <div className="relative mt-4 min-h-[190px] overflow-hidden rounded-3xl bg-gradient-to-br from-[#6b482c] to-[#46301f]">
           <span aria-hidden="true" className="absolute -left-10 top-[-60px] h-[330px] w-[330px] rounded-full bg-white/[0.04]" />
           <span aria-hidden="true" className="absolute left-[120px] top-[-20px] h-[260px] w-[260px] rounded-full bg-white/[0.04]" />
-          <div className="relative pl-4 pt-1.5">
+          <div className="relative pl-4 pt-1.5 max-[413px]:pb-9">
             <p className="text-xs leading-4 text-fg">Bem-vindo à Kurio</p>
-            <h2 className="mt-1.5 max-w-[190px] text-lg font-bold leading-[29px] text-fg-strong">SEJA DONO DA CULTURA DIGITAL</h2>
-            <p className="mt-1.5 max-w-[188px] text-xs leading-[18px] text-muted">Descubra NFTs selecionados de criadores do mundo todo.</p>
+            <h2 className="mt-1.5 max-w-[190px] text-lg max-[413px]:max-w-[min(190px,calc(100%-160px))] max-[374px]:max-w-[calc(100%-140px)] font-bold leading-[29px] text-fg-strong">SEJA DONO DA CULTURA DIGITAL</h2>
+            <p className="mt-1.5 max-w-[188px] text-xs max-[413px]:max-w-[min(188px,calc(100%-160px))] max-[374px]:max-w-[calc(100%-140px)] leading-[18px] text-muted">Descubra NFTs selecionados de criadores do mundo todo.</p>
             <a href="#catalogo" className="flex h-4 w-fit items-center gap-2 text-xs font-bold leading-[14px] text-accent">
               EXPLORAR
               <span aria-hidden="true" className="relative block size-4">
@@ -122,8 +122,8 @@ export function HomePage() {
               </span>
             </a>
           </div>
-          <NftImage artwork="ape-varsity" alt="Macaco de óculos escuros e jaqueta verde" size={320} priority className="absolute right-4 top-2.5 h-[139px] w-[138px] rounded-2xl" />
-          <NftImage artwork="ape-hoodie" alt="" size={320} className="absolute right-[82px] top-[98px] h-[59px] w-[58px] rounded-[14px]" />
+          <NftImage artwork="ape-varsity" alt="Macaco de óculos escuros e jaqueta verde" size={320} priority className="absolute right-4 top-2.5 h-[139px] w-[138px] max-[413px]:h-[120px] max-[413px]:w-[120px] max-[374px]:h-[100px] max-[374px]:w-[100px] rounded-2xl" />
+          <NftImage artwork="ape-hoodie" alt="" size={320} className="absolute right-[82px] top-[98px] h-[59px] w-[58px] max-[413px]:right-[72px] max-[413px]:top-[86px] max-[413px]:h-[50px] max-[413px]:w-[50px] max-[374px]:right-16 max-[374px]:top-[74px] max-[374px]:h-[42px] max-[374px]:w-[42px] rounded-[14px]" />
           <div aria-hidden="true" className="absolute inset-x-0 bottom-[5px] flex justify-center gap-2">
             {[0, 1, 2].map((dot) => (
               <span key={dot} className="h-2 w-2 rounded-full bg-primary" />
@@ -149,7 +149,7 @@ export function HomePage() {
 
         <div className="min-w-0">
           <div className="mb-[17px] flex flex-wrap items-center justify-between gap-3 px-6 md:mb-[26px] md:px-0">
-            <div role="tablist" aria-label="Seções do catálogo" className="flex gap-[5px] text-sm md:gap-5 md:text-[15px] max-md:[&>button:last-child]:ml-[11px]">
+            <div role="tablist" aria-label="Seções do catálogo" className="flex max-w-full min-w-0 gap-[5px] max-md:overflow-x-auto max-md:[scrollbar-width:none] text-sm md:gap-5 md:text-[15px] max-md:[&>button:last-child]:ml-[11px]">
               {TABS.map((tab) => {
                 const active = (search.tab ?? 'all') === tab.id
                 return (
