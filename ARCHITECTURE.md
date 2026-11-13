@@ -151,6 +151,13 @@ Assets:
 - A fonte Roboto Mono Variable é empacotada pelo `@fontsource-variable/roboto-mono`, sem requisições a CDNs, então o app roda offline e o Lighthouse mede a fonte real.
 - Não há assets externos: tudo o que a interface carrega vem do próprio repositório.
 
+## Carrosséis
+
+- **Hero da home** (`src/features/catalog/HeroCarousel.tsx`): três slides no desktop e no mobile. O Figma desenha só o primeiro, então os textos e as combinações de arte dos slides 2 e 3 foram criados seguindo o mesmo padrão. O autoplay (6 s, `VITE_HERO_AUTOPLAY_MS`) pausa com mouse, foco e toque, não roda com `prefers-reduced-motion` e só começa depois que os outros slides foram montados, 2,5 s após a primeira pintura, para não competir com a imagem principal. Os pontos são botões, há troca por setas do teclado e por deslize no toque, e os slides inativos ficam `inert` e `aria-hidden`.
+- **Animação:** a imagem nova entra opaca por cima da anterior, com revelação lateral e zoom suave, e os textos entram em sequência. Não há fade cruzado entre as artes, porque ele deixava o cartão creme da imagem translúcido no meio da troca.
+- **Sugestões** ("Mais desta coleção" e "Colecionadores também viram"): trilho com rolagem nativa e snap por card, 15 itens em páginas de 5, 3 e 2 cards conforme a largura. Os pontos e as setas do teclado movem uma página, com rolagem animada por `requestAnimationFrame` porque o `scroll-behavior` nativo com snap fica travado.
+- **Desvio:** no Figma os pontos inativos têm a mesma cor do ativo. Aqui os inativos ficam com 45% de opacidade, já que o estado ativo não está desenhado.
+
 ## Limitações conhecidas
 
 - O jar de cookies do MSW (`tough-cookie` e sua lista de sufixos públicos, cerca de 150 kB de JavaScript) é substituído por um módulo mínimo em `src/mocks/shims/tough-cookie.ts`, configurado como alias no `vite.config.ts`. A aplicação autentica por cabeçalho `Authorization` e nenhum handler define cookies, então a camada de mocks não oferece suporte a cookies. A troca reduziu o JavaScript do caminho crítico em cerca de 56 kB gzip.
