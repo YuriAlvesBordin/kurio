@@ -5,7 +5,7 @@ import type { CartItem } from '@/api/contracts'
 import { Icon } from '@/components/Icon'
 import { BackHeader } from '@/components/layout/BackHeader'
 import { Shell } from '@/components/layout/Shell'
-import { RelatedRow } from '@/components/nft/RelatedRow'
+import { RelatedRow, useRelatedItems } from '@/components/nft/RelatedRow'
 import { NftImage } from '@/components/nft/NftImage'
 import { QuantityStepper } from '@/components/QuantityStepper'
 import { Button } from '@/components/ui/button'
@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAuth } from '@/features/auth/authStore'
 import { useOpenAuth } from '@/features/auth/useOpenAuth'
-import { useCart, useCartMutations, useCatalog, useQuote } from '@/hooks/queries'
+import { useCart, useCartMutations, useQuote } from '@/hooks/queries'
 import { formatEthLabel } from '@/lib/eth'
 import { formatTokenId } from '@/lib/format'
 import { SummaryRows } from './Summary'
@@ -222,7 +222,6 @@ function CartRow({ item, onQuantity, onRemove, pending }: { item: CartItem; onQu
  * Suggested NFTs shown below the cart.
  */
 function Suggestions() {
-  const query = useCatalog({})
-  const items = query.data?.items.slice(3, 8) ?? []
-  return <RelatedRow id="suggest-title" title="Colecionadores também viram" items={items} pending={query.isPending} spacing="cart" className="mt-24" />
+  const { items, pending } = useRelatedItems(undefined, 3)
+  return <RelatedRow id="suggest-title" title="Colecionadores também viram" items={items} pending={pending} spacing="cart" className="mt-24" />
 }

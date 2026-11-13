@@ -6,14 +6,14 @@ import { ClientError } from '@/api/errors'
 import { Icon } from '@/components/Icon'
 import { Shell } from '@/components/layout/Shell'
 import { NftImage } from '@/components/nft/NftImage'
-import { RelatedRow } from '@/components/nft/RelatedRow'
+import { RelatedRow, useRelatedItems } from '@/components/nft/RelatedRow'
 import { QuantityStepper } from '@/components/QuantityStepper'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAuth } from '@/features/auth/authStore'
 import { useOpenAuth } from '@/features/auth/useOpenAuth'
-import { useCart, useCartMutations, useCatalog, useFavorites, useNft, useToggleFavorite } from '@/hooks/queries'
+import { useCart, useCartMutations, useFavorites, useNft, useToggleFavorite } from '@/hooks/queries'
 import { formatEthLabel } from '@/lib/eth'
 import { networkLabels } from '@/lib/labels'
 import { formatTokenId } from '@/lib/format'
@@ -388,9 +388,7 @@ function DetailContent({ nft }: { nft: NftDetail }) {
  * @param props current NFT
  */
 function MoreFromCollection({ nft }: { nft: NftDetail }) {
-  const query = useCatalog({})
-  const others = query.data?.items.filter((entry) => entry.id !== nft.id) ?? []
-  const items = others.length > 7 ? others.slice(2, 7) : others.slice(0, 5)
-  if (query.isSuccess && items.length === 0) return null
-  return <RelatedRow id="more-title" title="Mais desta coleção" items={items} pending={query.isPending} className="mt-[95px]" />
+  const { items, pending, empty } = useRelatedItems(nft.id, 2)
+  if (empty) return null
+  return <RelatedRow id="more-title" title="Mais desta coleção" items={items} pending={pending} className="mt-[95px]" />
 }
