@@ -180,7 +180,7 @@ function DetailContent({ nft }: { nft: NftDetail }) {
             <p className="flex h-[26px] shrink-0 items-center gap-1 rounded-full border border-primary px-2 text-[13px] font-bold leading-4 text-accent">
               <Icon name="star" size={12} />
               <span role="img" aria-label={`Nota ${nft.rating} de 5`}>
-                {nft.rating.toLocaleString('pt-BR', { minimumFractionDigits: 1 })}
+                {nft.rating.toFixed(1)}
               </span>
               <span className="font-normal text-muted">({nft.reviewCount})</span>
             </p>
@@ -345,7 +345,7 @@ function DetailContent({ nft }: { nft: NftDetail }) {
         ) : (
           <div role="tabpanel" className="pt-3 text-sm leading-6 text-muted">
             <p>
-              Nota média {nft.rating.toLocaleString('pt-BR')} de 5 com base em {nft.reviewCount} avaliações de colecionadores. Os comentários individuais ainda não estão disponíveis.
+              Nota média {nft.rating.toFixed(1)} de 5 com base em {nft.reviewCount} avaliações de colecionadores. Os comentários individuais ainda não estão disponíveis.
             </p>
           </div>
         )}
@@ -366,7 +366,7 @@ function DetailContent({ nft }: { nft: NftDetail }) {
             {soldOut ? 'Esgotado' : 'Comprar NFT'}
           </Button>
           <button type="button" aria-label="Adicionar ao carrinho" disabled={soldOut || add.isPending} onClick={() => addToCart(false)} className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full border border-line-soft bg-raised disabled:opacity-40">
-            <Icon name="cart" size={20} />
+            <Icon name="tabbar-shop" size={20} />
           </button>
         </div>
       </div>
