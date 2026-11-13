@@ -157,6 +157,7 @@ Assets:
 - **Animação:** a imagem nova entra opaca por cima da anterior, com revelação lateral e zoom suave, e os textos entram em sequência. Não há fade cruzado entre as artes, porque ele deixava o cartão creme da imagem translúcido no meio da troca.
 - **Sugestões** ("Mais desta coleção" e "Colecionadores também viram"): trilho com rolagem nativa e snap por card, 15 itens em páginas de 5, 3 e 2 cards conforme a largura. Os pontos e as setas do teclado movem uma página, com rolagem animada por `requestAnimationFrame` porque o `scroll-behavior` nativo com snap fica travado.
 - **Ajuste de acessibilidade:** os botões dos pontos têm 24 por 24 px (WCAG 2.2, critério 2.5.8), então os centros ficam a 24 px de distância e não 16 px como no Figma. O ponto desenhado continua com 8 px.
+- **Desvio, fundo do hero desktop:** no Figma o hero desktop não tem fundo visível (a camada `Rectangle` de 1200 por 450 px exporta vazia e a captura mostra a cor da página). Por pedido, o hero ganhou o mesmo cartão em degradê com dois círculos suaves do banner mobile, que fica fixo enquanto os slides animam.
 - **Desvio:** no Figma os pontos inativos têm a mesma cor do ativo. Aqui os inativos ficam com 45% de opacidade, já que o estado ativo não está desenhado.
 
 ## Limitações conhecidas

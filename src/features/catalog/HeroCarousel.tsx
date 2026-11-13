@@ -187,6 +187,10 @@ export function DesktopHero() {
   return (
     <section className="page-container mt-8 hidden md:block" aria-roledescription="carousel" aria-label="Destaques da Kurio" {...bind}>
       <div className="relative grid touch-pan-y md:min-h-[340px] lg:h-[450px]" aria-live="off">
+        <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-[30px] bg-gradient-to-br from-[#6b482c] to-[#46301f]">
+          <span className="absolute -left-24 -top-32 h-[520px] w-[520px] rounded-full bg-white/[0.04]" />
+          <span className="absolute left-[300px] top-[-60px] h-[440px] w-[440px] rounded-full bg-white/[0.04]" />
+        </div>
         {SLIDES.map((slide, position) => {
           if (position > 0 && !ready) return null
           const Heading = position === 0 ? 'h1' : 'h2'
