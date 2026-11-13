@@ -43,12 +43,19 @@ async function startServer() {
  * @param formFactor mobile or desktop
  */
 async function audit(url, formFactor) {
-  const chrome = await launch({ chromePath, chromeFlags: ['--headless=new', '--no-sandbox', '--disable-gpu'] })
-  try {
-    const flags = { port: chrome.port, output: ['json', 'html'], onlyCategories: config.categories, logLevel: 'error' }
-    return await lighthouse(url, flags, formFactor === 'desktop' ? desktopConfig : undefined)
-  } finally {
-    await chrome.kill()
+  for (let attempt = 1; ; attempt += 1) {
+    let chrome
+    try {
+      chrome = await launch({ chromePath, chromeFlags: ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage'] })
+      const flags = { port: chrome.port, output: ['json', 'html'], onlyCategories: config.categories, logLevel: 'error' }
+      return await lighthouse(url, flags, formFactor === 'desktop' ? desktopConfig : undefined)
+    } catch (error) {
+      if (attempt >= 3) throw error
+      console.warn(`audit of ${url} (${formFactor}) failed on attempt ${attempt}: ${error.message}. Retrying.`)
+      await sleep(2000)
+    } finally {
+      await chrome?.kill()
+    }
   }
 }
 
