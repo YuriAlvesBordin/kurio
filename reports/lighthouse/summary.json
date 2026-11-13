@@ -1,0 +1,178 @@
+{
+  "targets": {
+    "performance": 90,
+    "accessibility": 95,
+    "best-practices": 95,
+    "seo": 90
+  },
+  "results": [
+    {
+      "page": "inicio",
+      "formFactor": "mobile",
+      "runs": [
+        {
+          "performance": 63,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 4127.8634999999995,
+          "cls": 0,
+          "tbt": 752.0227499999996
+        },
+        {
+          "performance": 65,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 4230.56865,
+          "cls": 0,
+          "tbt": 532.094775
+        },
+        {
+          "performance": 66,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 4074.72945,
+          "cls": 0,
+          "tbt": 535.0000000000009
+        }
+      ],
+      "median": {
+        "performance": 65,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 92,
+        "lcp": 4127.8634999999995,
+        "cls": 0,
+        "tbt": 535.0000000000009
+      }
+    },
+    {
+      "page": "inicio",
+      "formFactor": "desktop",
+      "runs": [
+        {
+          "performance": 100,
+          "accessibility": 97,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 710.959225,
+          "cls": 0.0001310816654892597,
+          "tbt": 48.50582499999996
+        },
+        {
+          "performance": 99,
+          "accessibility": 97,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 758.5918,
+          "cls": 0.0001310816654892597,
+          "tbt": 30.500000000000057
+        },
+        {
+          "performance": 98,
+          "accessibility": 97,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 839,
+          "cls": 0.0001310816654892597,
+          "tbt": 64
+        }
+      ],
+      "median": {
+        "performance": 99,
+        "accessibility": 97,
+        "bestPractices": 100,
+        "seo": 92,
+        "lcp": 758.5918,
+        "cls": 0.0001310816654892597,
+        "tbt": 48.50582499999996
+      }
+    },
+    {
+      "page": "detalhe",
+      "formFactor": "mobile",
+      "runs": [
+        {
+          "performance": 74,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 3776.0534,
+          "cls": 0,
+          "tbt": 360.9999999999998
+        },
+        {
+          "performance": 73,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 3875.5154500000003,
+          "cls": 0,
+          "tbt": 360.8350499999999
+        },
+        {
+          "performance": 71,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 3891.9845499999997,
+          "cls": 0,
+          "tbt": 406
+        }
+      ],
+      "median": {
+        "performance": 73,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 92,
+        "lcp": 3875.5154500000003,
+        "cls": 0,
+        "tbt": 360.9999999999998
+      }
+    },
+    {
+      "page": "detalhe",
+      "formFactor": "desktop",
+      "runs": [
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 901.467825,
+          "cls": 0,
+          "tbt": 12
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 836.1423,
+          "cls": 0,
+          "tbt": 18
+        },
+        {
+          "performance": 99,
+          "accessibility": 100,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 884.619925,
+          "cls": 0,
+          "tbt": 5.5
+        }
+      ],
+      "median": {
+        "performance": 99,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 92,
+        "lcp": 884.619925,
+        "cls": 0,
+        "tbt": 12
+      }
+    }
+  ]
+}
