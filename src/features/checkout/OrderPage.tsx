@@ -106,23 +106,25 @@ export function OrderPage() {
             </dl>
             <div className="px-6 pb-4 pt-5 md:px-11">
               <h2 className="text-[15px] font-bold leading-5 text-fg-strong">Detalhes da transação</h2>
-              <div className="mt-[9px] grid grid-cols-[1fr_90px_115px] border-b border-rule pb-[10px] text-base font-bold leading-4 text-fg-strong">
+              <div className="mt-[9px] grid grid-cols-[1fr_auto] border-b border-rule pb-[10px] text-base font-bold leading-4 text-fg-strong md:grid-cols-[1fr_90px_115px]">
                 <span>NFTs</span>
-                <span className="text-center">Edições</span>
+                <span className="hidden text-center md:block">Edições</span>
                 <span className="text-right">Subtotal</span>
               </div>
               <ul className="mt-[12px] flex flex-col gap-3">
                 {order.snapshot.items.map((item) => (
-                  <li key={item.id} className="grid h-[70px] grid-cols-[1fr_90px_115px] items-center">
-                    <div className="flex items-center gap-3">
-                      <NftImage artwork={item.image} alt="" size={320} className="h-[70px] w-[70px] rounded-lg" />
-                      <div>
+                  <li key={item.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 md:h-[70px] md:grid-cols-[1fr_90px_115px] md:gap-x-0">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <NftImage artwork={item.image} alt="" size={320} className="h-[70px] w-[70px] shrink-0 rounded-lg" />
+                      <div className="min-w-0">
                         <p className="text-base font-bold leading-4 text-fg-strong">{item.name}</p>
                         <p className="mt-1.5 text-sm leading-4 text-subtle">ID do token: {formatTokenId(item.tokenId)}</p>
                       </div>
                     </div>
-                    <span className="text-center text-sm text-muted">(x {item.quantity})</span>
-                    <span className="text-right text-lg font-bold text-accent">{formatEth(item.lineTotalEth)} ETH</span>
+                    <div className="flex flex-col items-end gap-1 md:contents">
+                      <span className="text-sm text-muted md:text-center">(x {item.quantity})</span>
+                      <span className="whitespace-nowrap text-lg font-bold text-accent md:text-right">{formatEth(item.lineTotalEth)} ETH</span>
+                    </div>
                   </li>
                 ))}
               </ul>
