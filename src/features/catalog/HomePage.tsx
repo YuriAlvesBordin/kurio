@@ -73,7 +73,7 @@ export function HomePage() {
   const filtered = Boolean(search.q || search.collections || search.networks || search.min || search.max)
 
   return (
-    <Shell active="Início" tab="home">
+    <Shell tab="home">
       <section className="page-container mt-8 hidden md:block" aria-labelledby="hero-title">
         <div className="relative flex h-[450px] items-start justify-between pl-10 pt-[43px]">
           <div className="flex w-[600px] max-w-full flex-col">

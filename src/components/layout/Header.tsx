@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { Icon } from '@/components/Icon'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/features/auth/authStore'
@@ -15,9 +15,11 @@ const NAV = [
 
 /**
  * Desktop and tablet top bar with navigation, search, cart and account entry.
- * @param props current section used to highlight the active link
+ * @param props optional section override, otherwise the active link follows the URL hash
  */
-export function Header({ active = 'Início' }: { active?: string }) {
+export function Header({ active }: { active?: string }) {
+  const hash = useRouterState({ select: (state) => state.location.hash })
+  const current = active ?? NAV.find((item) => item.hash && item.hash === hash.replace(/^#/, ''))?.label ?? 'Início'
   const { user } = useAuth()
   const cart = useCart()
   const navigate = useNavigate()
@@ -35,14 +37,19 @@ export function Header({ active = 'Início' }: { active?: string }) {
           </Link>
           <nav aria-label="Principal" className="flex items-start justify-center gap-10 lg:justify-start">
             {NAV.map((item) => (
-              <Link
+              <a
                 key={item.label}
-                to={item.to}
-                hash={item.hash}
-                className={`-mb-px flex h-[45px] items-start border-b-[3px] text-base leading-6 tracking-[0.01em] ${active === item.label ? 'border-primary font-bold text-accent' : 'border-transparent text-fg hover:text-accent'}`}
+                href={item.hash ? `/#${item.hash}` : '/'}
+                aria-current={current === item.label ? 'page' : undefined}
+                onClick={(event) => {
+                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return
+                  event.preventDefault()
+                  void navigate({ to: '/', hash: item.hash })
+                }}
+                className={`-mb-px flex h-[45px] items-start border-b-[3px] text-base leading-6 tracking-[0.01em] ${current === item.label ? 'border-primary font-bold text-accent' : 'border-transparent text-fg hover:text-accent'}`}
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
           </nav>
           <div className="flex h-[35px] items-center gap-[26px]">

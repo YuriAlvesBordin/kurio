@@ -79,4 +79,18 @@ test.describe('catalog and URL state', () => {
     await open(page, '/?sort=bogus&page=-4&collections=nope&min=abc')
     await expect(page.getByTestId('nft-card')).toHaveCount(9)
   })
+
+  test('top bar highlights the section that was clicked', async ({ page }) => {
+    test.skip(isMobile(page), 'the top bar is desktop only')
+    await open(page)
+    const nav = page.getByRole('navigation', { name: 'Principal' })
+    await expect(nav.getByRole('link', { name: 'Início' })).toHaveAttribute('aria-current', 'page')
+    await nav.getByRole('link', { name: 'Mercado' }).click()
+    await expect(page).toHaveURL(/#catalogo$/)
+    await expect(nav.getByRole('link', { name: 'Mercado' })).toHaveAttribute('aria-current', 'page')
+    await expect(nav.getByRole('link', { name: 'Início' })).not.toHaveAttribute('aria-current', 'page')
+    await nav.getByRole('link', { name: 'Início' }).click()
+    await expect(nav.getByRole('link', { name: 'Início' })).toHaveAttribute('aria-current', 'page')
+    await expect(nav.getByRole('link', { name: 'Mercado' })).not.toHaveAttribute('aria-current', 'page')
+  })
 })
