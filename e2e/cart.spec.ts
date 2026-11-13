@@ -24,7 +24,9 @@ test.describe('cart', () => {
     await addToCart(page, 'nft-001')
     await page.reload()
     await expect(page.getByTestId('cart-row')).toHaveCount(1)
+    const removed = page.waitForResponse((response) => response.request().method() === 'DELETE' && response.url().includes('/api/cart/items/'))
     await page.getByRole('button', { name: /^Remover Emerald Ape/ }).filter({ visible: true }).click()
+    await removed
     await expect(page.getByTestId('empty-cart')).toBeVisible()
     await page.reload()
     await expect(page.getByTestId('empty-cart')).toBeVisible()

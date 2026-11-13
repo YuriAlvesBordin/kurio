@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { ANA, BRUNO, isMobile, login, open } from './helpers'
+import { ANA, BRUNO, login, open } from './helpers'
 
 test.describe('favorites', () => {
   test('guests are asked to sign in before favoriting', async ({ page }) => {
@@ -33,6 +33,5 @@ test.describe('favorites', () => {
     await expect(button).toHaveAttribute('aria-pressed', 'false')
     await button.click()
     await expect(page.getByRole('button', { name: /^Favoritar$/ }).filter({ visible: true }).first()).toHaveAttribute('aria-pressed', 'false', { timeout: 10_000 })
-    test.skip(isMobile(page) && false, 'covered on both viewports')
   })
 })

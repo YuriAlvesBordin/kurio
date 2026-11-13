@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { ANA, addToCart, isMobile, login, open } from './helpers'
+import { ANA, addToCart, login, open } from './helpers'
 
 test.describe('authentication and session', () => {
   test('login, refresh keeps the session and logout clears it', async ({ page }) => {
@@ -74,12 +74,13 @@ test.describe('authentication and session', () => {
     await open(page)
     await addToCart(page, 'nft-001', 2)
     await page.getByRole('button', { name: /finalizar/ }).click()
+    const merged = page.waitForResponse((response) => response.url().includes('/api/cart/merge'))
     await login(page, ANA)
+    await merged
     await page.waitForURL('**/pagamento')
     await page.goto('/carrinho')
     await expect(page.getByTestId('cart-row')).toHaveCount(1)
     await expect(page.getByTestId('subtotal')).toHaveText('2.38 ETH')
-    test.skip(isMobile(page) && false, 'covered on both viewports')
   })
 
   test('profile edits persist and password change works', async ({ page }) => {
