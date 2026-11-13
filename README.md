@@ -135,9 +135,7 @@ Todas as metas foram atingidas, exceto a Performance no mobile, que ficou abaixo
 
 O projeto é uma SPA estática. Os arquivos `vercel.json`, `netlify.toml` e `public/_redirects` já trazem o fallback de rotas para `index.html` e o cache dos assets. Em qualquer uma das plataformas basta importar o repositório com o comando de build `npm run build` e o diretório de saída `dist`. O `.env` versionado (sem segredos, igual ao `.env.example`) mantém `VITE_ENABLE_MOCKS=true`, então o site publicado funciona sem back-end.
 
-A URL pública depende de uma conta na plataforma escolhida e não foi gerada neste ambiente. Ela deve ser preenchida aqui após a publicação.
-
-URL pública: a definir após o deploy.
+URL pública: https://kurio-woad.vercel.app (Vercel, com mocks e tempo real via Socket.IO ativos, acesso direto e refresh de rotas funcionando).
 
 ## Estrutura
 
