@@ -153,6 +153,7 @@ Assets:
 
 ## Limitações conhecidas
 
+- O jar de cookies do MSW (`tough-cookie` e sua lista de sufixos públicos, cerca de 150 kB de JavaScript) é substituído por um módulo mínimo em `src/mocks/shims/tough-cookie.ts`, configurado como alias no `vite.config.ts`. A aplicação autentica por cabeçalho `Authorization` e nenhum handler define cookies, então a camada de mocks não oferece suporte a cookies. A troca reduziu o JavaScript do caminho crítico em cerca de 56 kB gzip.
 - A Performance no Lighthouse mobile fica abaixo da meta de 90 (veja o README e `reports/lighthouse/summary.md`). A causa é o JavaScript do caminho crítico, com o bundle do app e o MSW rodando no navegador sob CPU 4 vezes mais lenta, que eleva o TBT e o LCP. O desktop atinge todas as metas.
 - O estado dos mocks vive no `localStorage` do navegador, então não é compartilhado entre dispositivos.
 - O pagamento é simulado. Não há integração com carteiras ou blockchain.

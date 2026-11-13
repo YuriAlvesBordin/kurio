@@ -124,12 +124,12 @@ Medianas da última execução (Lighthouse 12.8.2, Chrome 153 headless, throttli
 
 | Página | Dispositivo | Performance | Acessibilidade | Boas práticas | SEO | LCP | CLS | TBT |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Início | mobile | 58 | 100 | 100 | 92 | 4086 ms | 0 | 1038 ms |
-| Início | desktop | 98 | 97 | 100 | 92 | 790 ms | 0 | 104 ms |
-| Detalhe | mobile | 59 | 100 | 100 | 92 | 4095 ms | 0 | 893 ms |
-| Detalhe | desktop | 98 | 100 | 100 | 92 | 904 ms | 0 | 89 ms |
+| Início | mobile | 62 | 100 | 100 | 92 | 3795 ms | 0 | 954 ms |
+| Início | desktop | 99 | 97 | 100 | 92 | 744 ms | 0 | 78 ms |
+| Detalhe | mobile | 70 | 100 | 100 | 92 | 3698 ms | 0 | 512 ms |
+| Detalhe | desktop | 99 | 100 | 100 | 92 | 850 ms | 0 | 47 ms |
 
-Todas as metas foram atingidas, exceto a Performance no mobile, que ficou abaixo de 90. O motivo é o JavaScript do caminho crítico: o bundle do app soma cerca de 185 kB gzip e o MSW roda no navegador e soma cerca de 110 kB gzip, e o Lighthouse mobile avalia com CPU 4 vezes mais lenta. Isso eleva o TBT (acima de 800 ms) e atrasa o LCP (acima de 4 s). O CLS é zero. As mitigações já aplicadas foram: rotas em chunks separados, Socket.IO e o diálogo de autenticação carregados sob demanda, carregamento do MSW em paralelo ao app (as requisições esperam um portão de rede), preload do módulo de mocks e skeletons com altura estável. Uma API real dispensaria o MSW e eliminaria essa diferença, mas a auditoria usa o cenário padrão dos mocks, sem simplificações. Os números variam com a carga da máquina: uma execução anterior em condição mais folgada mediu 65 e 73.
+Todas as metas foram atingidas, exceto a Performance no mobile, que ficou abaixo de 90. O motivo é o JavaScript do caminho crítico: o bundle do app soma cerca de 185 kB gzip e o MSW roda no navegador e soma cerca de 54 kB gzip (eram 110 kB antes de trocar o cookie jar do MSW por um módulo mínimo, veja `ARCHITECTURE.md`), e o Lighthouse mobile avalia com CPU 4 vezes mais lenta. Isso eleva o TBT (500 a 950 ms) e atrasa o LCP (cerca de 3,7 s). Um perfil de CPU com throttling 4x mostrou o custo espalhado entre o app, o MSW e o TanStack, sem um ponto quente único. O CLS é zero. As mitigações já aplicadas foram: rotas em chunks separados, Socket.IO e o diálogo de autenticação carregados sob demanda, carregamento do MSW em paralelo ao app (as requisições esperam um portão de rede), preload do módulo de mocks e skeletons com altura estável. Uma API real dispensaria o MSW e eliminaria essa diferença, mas a auditoria usa o cenário padrão dos mocks, sem simplificações. Os números variam com a carga da máquina: uma execução anterior em condição mais folgada, antes da troca do cookie jar, mediu 65 e 73.
 
 ## Deploy
 
