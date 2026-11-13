@@ -73,7 +73,7 @@ export function Footer() {
             <span className="text-fg">contato@email.com</span>
             <span className="text-fg">+55 11 4002 8922</span>
           </div>
-          <div className="grid gap-8 bg-card pb-[29px] pl-8 pt-[30px] md:grid-cols-4 lg:grid-cols-[303px_303px_303px_minmax(0,1fr)] lg:gap-x-0">
+          <div className="grid gap-8 bg-card pb-[29px] pl-8 pt-[30px] md:grid-cols-2 lg:grid-cols-[303px_303px_303px_minmax(0,1fr)] lg:gap-x-0">
             {COLUMNS.map((column) => (
               <div key={column.title}>
                 <h3 className="mb-[3px] text-lg font-bold leading-6 text-fg-strong">{column.title}</h3>
@@ -98,7 +98,7 @@ export function Footer() {
                 ))}
               </div>
               <h3 className="mb-[7px] mt-7 text-lg font-bold leading-6 text-fg-strong">Carteiras compatíveis</h3>
-              <p className="flex h-[26px] w-[228px] items-center justify-center whitespace-nowrap rounded border border-[#4d321e] text-[9.2px] font-bold text-primary">METAMASK &nbsp;•&nbsp; WALLETCONNECT &nbsp;•&nbsp; COINBASE</p>
+              <p className="flex h-[26px] w-[228px] max-w-full items-center justify-center whitespace-nowrap rounded border border-[#4d321e] text-[9.2px] font-bold text-primary">METAMASK &nbsp;•&nbsp; WALLETCONNECT &nbsp;•&nbsp; COINBASE</p>
             </div>
           </div>
         </div>

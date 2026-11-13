@@ -8,6 +8,7 @@ export function Toaster() {
     <Sonner
       theme="dark"
       position="bottom-center"
+      mobileOffset={{ bottom: 140 }}
       toastOptions={{ style: { background: '#2f1d15', border: '1px solid #55321f', color: '#f5f1eb', fontFamily: 'inherit', borderRadius: 0 } }}
     />
   )

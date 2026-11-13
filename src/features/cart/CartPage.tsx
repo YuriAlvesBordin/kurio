@@ -113,7 +113,7 @@ export function CartPage() {
             )}
           </section>
 
-          <aside aria-labelledby="summary-title" className="flex flex-col max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:z-40 max-lg:mx-auto max-lg:max-h-[85vh] max-lg:max-w-[480px] max-lg:overflow-y-auto max-lg:rounded-t-[40px] max-lg:bg-card max-lg:px-6 max-lg:pb-9 max-lg:pt-6">
+          <aside aria-labelledby="summary-title" className="flex flex-col max-md:fixed max-md:inset-x-0 max-md:bottom-0 max-md:z-40 max-md:max-h-[85vh] max-md:overflow-y-auto max-lg:mx-auto max-lg:max-w-[480px] max-lg:rounded-t-[40px] md:max-lg:mt-8 md:max-lg:w-full max-lg:bg-card max-lg:px-6 max-lg:pb-9 max-lg:pt-6">
             <h2 id="summary-title" className="max-lg:sr-only border-b border-[#4d321e] pb-[11px] text-lg font-bold leading-4 text-fg-strong">
               Resumo da carteira
             </h2>

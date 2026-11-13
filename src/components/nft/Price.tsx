@@ -13,9 +13,9 @@ interface PriceProps {
  */
 export function Price({ value, compareAt, className }: PriceProps) {
   return (
-    <p className={cn('font-bold text-accent', className)}>
+    <p className={cn('flex flex-wrap items-baseline gap-x-3 gap-y-1 font-bold text-accent', className)}>
       {formatEthLabel(value)}
-      {compareAt ? <span className="ml-3 font-normal text-subtle">{formatEthLabel(compareAt)}</span> : null}
+      {compareAt ? <span className="font-normal text-subtle">{formatEthLabel(compareAt)}</span> : null}
     </p>
   )
 }
