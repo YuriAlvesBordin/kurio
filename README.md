@@ -104,7 +104,7 @@ O objeto `window.__kurioMock` também expõe controles para reproduzir falhas de
 
 São 12 áreas em `e2e/`: autenticação e sessão, catálogo e URL, resiliência do catálogo, detalhe do NFT, favoritos, carrinho, checkout, cenários de checkout, tempo real, expiração de sessão, carteiras e avatar, e responsividade com acessibilidade. Todas rodam em Chromium nos projetos `desktop` (1440) e `mobile` (390).
 
-A regressão visual (`e2e/visual.spec.ts`) cobre Início, Detalhe, Carrinho e Pagamento nos dois viewports, com baselines em `e2e/__screenshots__`. O relatório HTML fica em `playwright-report` e os traces em `test-results`, ambos gerados em toda execução.
+A regressão visual (`e2e/visual.spec.ts`) cobre Início, Detalhe, Carrinho e Pagamento nos dois viewports, com baselines em `e2e/__screenshots__`. O relatório HTML da última execução está versionado em `playwright-report` e o Playwright grava os traces das falhas em `test-results` (`retain-on-failure`). Os cenários sensíveis a tempo usam o relógio controlado do Playwright (`page.clock`), como o teste de pedido pendente em `e2e/checkout-scenarios.spec.ts`.
 
 ```
 npm run test:e2e
@@ -120,20 +120,20 @@ npm run lighthouse
 
 O script `scripts/lighthouse.mjs` sobe o `vite preview`, roda 3 auditorias por página (Início e Detalhe) e por dispositivo (mobile e desktop), calcula a mediana e grava os relatórios HTML e JSON em `reports/lighthouse`, além de `summary.md` e `summary.json`. A configuração versionada está em `lighthouse/config.json`. Defina `CHROME_PATH` se o Chrome não estiver em `/usr/bin/google-chrome`.
 
-Medianas da última execução (Lighthouse 12, throttling padrão):
+Medianas da última execução (Lighthouse 12.8.2, Chrome 153 headless, throttling simulado padrão). O ambiente completo, as versões e as condições da medição estão em `reports/lighthouse/summary.md`.
 
 | Página | Dispositivo | Performance | Acessibilidade | Boas práticas | SEO | LCP | CLS | TBT |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Início | mobile | 65 | 100 | 100 | 92 | 4128 ms | 0 | 535 ms |
-| Início | desktop | 99 | 97 | 100 | 92 | 759 ms | 0 | 49 ms |
-| Detalhe | mobile | 73 | 100 | 100 | 92 | 3876 ms | 0 | 361 ms |
-| Detalhe | desktop | 99 | 100 | 100 | 92 | 885 ms | 0 | 12 ms |
+| Início | mobile | 58 | 100 | 100 | 92 | 4086 ms | 0 | 1038 ms |
+| Início | desktop | 98 | 97 | 100 | 92 | 790 ms | 0 | 104 ms |
+| Detalhe | mobile | 59 | 100 | 100 | 92 | 4095 ms | 0 | 893 ms |
+| Detalhe | desktop | 98 | 100 | 100 | 92 | 904 ms | 0 | 89 ms |
 
-Todas as metas foram atingidas, exceto a Performance no mobile, que ficou abaixo de 90. O motivo é que o MSW roda no navegador e soma cerca de 110 kB gzip de JavaScript ao caminho crítico, que o Lighthouse mobile avalia com CPU 4 vezes mais lenta. As mitigações já aplicadas foram: rotas em chunks separados, Socket.IO e o diálogo de autenticação carregados sob demanda, carregamento do MSW em paralelo ao app (as requisições esperam um portão de rede), preload do módulo de mocks e skeletons com altura estável. Uma API real dispensaria o MSW e eliminaria essa diferença. Os números variam entre execuções.
+Todas as metas foram atingidas, exceto a Performance no mobile, que ficou abaixo de 90. O motivo é o JavaScript do caminho crítico: o bundle do app soma cerca de 185 kB gzip e o MSW roda no navegador e soma cerca de 110 kB gzip, e o Lighthouse mobile avalia com CPU 4 vezes mais lenta. Isso eleva o TBT (acima de 800 ms) e atrasa o LCP (acima de 4 s). O CLS é zero. As mitigações já aplicadas foram: rotas em chunks separados, Socket.IO e o diálogo de autenticação carregados sob demanda, carregamento do MSW em paralelo ao app (as requisições esperam um portão de rede), preload do módulo de mocks e skeletons com altura estável. Uma API real dispensaria o MSW e eliminaria essa diferença, mas a auditoria usa o cenário padrão dos mocks, sem simplificações. Os números variam com a carga da máquina: uma execução anterior em condição mais folgada mediu 65 e 73.
 
 ## Deploy
 
-O projeto é uma SPA estática. Os arquivos `vercel.json`, `netlify.toml` e `public/_redirects` já trazem o fallback de rotas para `index.html` e o cache dos assets. Em qualquer uma das plataformas basta importar o repositório com o comando de build `npm run build` e o diretório de saída `dist`. O `.env` versionado mantém `VITE_ENABLE_MOCKS=true`, então o site publicado funciona sem back-end.
+O projeto é uma SPA estática. Os arquivos `vercel.json`, `netlify.toml` e `public/_redirects` já trazem o fallback de rotas para `index.html` e o cache dos assets. Em qualquer uma das plataformas basta importar o repositório com o comando de build `npm run build` e o diretório de saída `dist`. O `.env` versionado (sem segredos, igual ao `.env.example`) mantém `VITE_ENABLE_MOCKS=true`, então o site publicado funciona sem back-end.
 
 A URL pública depende de uma conta na plataforma escolhida e não foi gerada neste ambiente. Ela deve ser preenchida aqui após a publicação.
 
