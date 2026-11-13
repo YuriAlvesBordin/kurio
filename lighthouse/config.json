@@ -1,0 +1,12 @@
+{
+  "runs": 3,
+  "port": 4175,
+  "pages": [
+    { "id": "inicio", "path": "/" },
+    { "id": "detalhe", "path": "/nft/nft-001" }
+  ],
+  "formFactors": ["mobile", "desktop"],
+  "categories": ["performance", "accessibility", "best-practices", "seo"],
+  "targets": { "performance": 90, "accessibility": 95, "best-practices": 95, "seo": 90 },
+  "outputDir": "reports/lighthouse"
+}
