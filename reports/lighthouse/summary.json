@@ -5,47 +5,64 @@
     "best-practices": 95,
     "seo": 90
   },
+  "environment": {
+    "lighthouse": "12.8.2",
+    "axeCore": "4.14.0",
+    "chrome": "Chrome/158.0.0.0",
+    "benchmarkIndex": 847.5,
+    "throttlingMethod": "simulate",
+    "mobileThrottling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "cpuSlowdownMultiplier": 4
+    },
+    "node": "v26.13.1",
+    "platform": "Linux 6.17.0-35-generic x64",
+    "cpus": "4x Intel(R) Core(TM) i5-2410M CPU @ 2.30GHz",
+    "memoryGb": 8,
+    "measuredAt": "2026-11-13T19:17:32.444Z"
+  },
   "results": [
     {
       "page": "inicio",
       "formFactor": "mobile",
       "runs": [
         {
-          "performance": 63,
+          "performance": 55,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 4127.8634999999995,
+          "lcp": 4161.7855,
           "cls": 0,
-          "tbt": 752.0227499999996
+          "tbt": 1161.46425
         },
         {
-          "performance": 65,
+          "performance": 58,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 4230.56865,
+          "lcp": 4085.552349999999,
           "cls": 0,
-          "tbt": 532.094775
+          "tbt": 1005.2412749999996
         },
         {
-          "performance": 66,
+          "performance": 58,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 4074.72945,
+          "lcp": 4072.867400000001,
           "cls": 0,
-          "tbt": 535.0000000000009
+          "tbt": 1037.9779
         }
       ],
       "median": {
-        "performance": 65,
+        "performance": 58,
         "accessibility": 100,
         "bestPractices": 100,
         "seo": 92,
-        "lcp": 4127.8634999999995,
+        "lcp": 4085.552349999999,
         "cls": 0,
-        "tbt": 535.0000000000009
+        "tbt": 1037.9779
       }
     },
     {
@@ -53,41 +70,41 @@
       "formFactor": "desktop",
       "runs": [
         {
-          "performance": 100,
+          "performance": 98,
           "accessibility": 97,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 710.959225,
+          "lcp": 778.423725,
           "cls": 0.0001310816654892597,
-          "tbt": 48.50582499999996
-        },
-        {
-          "performance": 99,
-          "accessibility": 97,
-          "bestPractices": 100,
-          "seo": 92,
-          "lcp": 758.5918,
-          "cls": 0.0001310816654892597,
-          "tbt": 30.500000000000057
+          "tbt": 95.58232499999997
         },
         {
           "performance": 98,
           "accessibility": 97,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 839,
+          "lcp": 789.9414,
           "cls": 0.0001310816654892597,
-          "tbt": 64
+          "tbt": 103.81982500000004
+        },
+        {
+          "performance": 96,
+          "accessibility": 97,
+          "bestPractices": 100,
+          "seo": 92,
+          "lcp": 792.8028499999999,
+          "cls": 0.0001310816654892597,
+          "tbt": 140.5
         }
       ],
       "median": {
-        "performance": 99,
+        "performance": 98,
         "accessibility": 97,
         "bestPractices": 100,
         "seo": 92,
-        "lcp": 758.5918,
+        "lcp": 789.9414,
         "cls": 0.0001310816654892597,
-        "tbt": 48.50582499999996
+        "tbt": 103.81982500000004
       }
     },
     {
@@ -95,41 +112,41 @@
       "formFactor": "mobile",
       "runs": [
         {
-          "performance": 74,
+          "performance": 54,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 3776.0534,
+          "lcp": 4159.9809000000005,
           "cls": 0,
-          "tbt": 360.9999999999998
+          "tbt": 1226.5687
         },
         {
-          "performance": 73,
+          "performance": 60,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 3875.5154500000003,
+          "lcp": 4053.2641249999997,
           "cls": 0,
-          "tbt": 360.8350499999999
+          "tbt": 824.3948749999995
         },
         {
-          "performance": 71,
+          "performance": 59,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 3891.9845499999997,
+          "lcp": 4095.0375250000006,
           "cls": 0,
-          "tbt": 406
+          "tbt": 893.0000000000002
         }
       ],
       "median": {
-        "performance": 73,
+        "performance": 59,
         "accessibility": 100,
         "bestPractices": 100,
         "seo": 92,
-        "lcp": 3875.5154500000003,
+        "lcp": 4095.0375250000006,
         "cls": 0,
-        "tbt": 360.9999999999998
+        "tbt": 893.0000000000002
       }
     },
     {
@@ -137,41 +154,41 @@
       "formFactor": "desktop",
       "runs": [
         {
-          "performance": 99,
+          "performance": 98,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 901.467825,
+          "lcp": 938.3145499999999,
           "cls": 0,
-          "tbt": 12
+          "tbt": 91
         },
         {
-          "performance": 99,
+          "performance": 98,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 836.1423,
+          "lcp": 903.9455499999999,
           "cls": 0,
-          "tbt": 18
+          "tbt": 89.49999999999989
         },
         {
-          "performance": 99,
+          "performance": 98,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 884.619925,
+          "lcp": 902.703475,
           "cls": 0,
-          "tbt": 5.5
+          "tbt": 86
         }
       ],
       "median": {
-        "performance": 99,
+        "performance": 98,
         "accessibility": 100,
         "bestPractices": 100,
         "seo": 92,
-        "lcp": 884.619925,
+        "lcp": 903.9455499999999,
         "cls": 0,
-        "tbt": 12
+        "tbt": 89.49999999999989
       }
     }
   ]
