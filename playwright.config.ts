@@ -16,7 +16,7 @@ export default defineConfig({
   outputDir: 'test-results',
   use: {
     baseURL: `http://127.0.0.1:${port}`,
-    trace: 'on',
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     locale: 'pt-BR',
     launchOptions: { executablePath, args: ['--no-sandbox'] },
