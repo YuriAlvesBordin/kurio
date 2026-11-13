@@ -71,4 +71,19 @@ test.describe('checkout scenarios', () => {
     await page.getByRole('button', { name: 'Conectar carteira' }).click()
     await expect(page.getByText('A carteira recusou a conexão.')).toBeVisible()
   })
+
+  test('pending order is settled by advancing a controlled clock', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-03-10T12:00:00Z') })
+    await checkoutUnder(page, 'default')
+    await page.getByRole('button', { name: 'Confirmar compra' }).click()
+    await expect.poll(async () => {
+      await page.clock.fastForward(1_000)
+      return page.url()
+    }, { timeout: 15_000 }).toContain('/pedido/')
+    await expect.poll(async () => {
+      await page.clock.fastForward(1_000)
+      return page.getByTestId('order-confirmed').isVisible()
+    }, { timeout: 15_000 }).toBe(true)
+    await expect(page.getByTestId('order-confirmed')).toContainText('1.19')
+  })
 })
