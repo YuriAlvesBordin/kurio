@@ -1,0 +1,52 @@
+import { expect, test } from '@playwright/test'
+import { ANA, login, open } from './helpers'
+
+test.describe('wallets and avatar', () => {
+  test('primary wallet can be edited and persists', async ({ page }) => {
+    await open(page)
+    await login(page, ANA)
+    await page.goto('/perfil/carteiras')
+    const form = page.getByRole('form', { name: 'Carteira principal' })
+    await expect(form.getByLabel('Apelido da carteira *')).toBeVisible()
+    await form.getByLabel('Apelido da carteira *').fill('Minha principal')
+    await form.getByRole('button', { name: 'Salvar carteira' }).click()
+    await expect(page.getByText('Carteira salva')).toBeVisible()
+    await page.reload()
+    await expect(page.getByRole('form', { name: 'Carteira principal' }).getByLabel('Apelido da carteira *')).toHaveValue('Minha principal')
+  })
+
+  test('secondary wallet can be added validated and removed', async ({ page }) => {
+    await open(page)
+    await login(page, ANA)
+    await page.goto('/perfil/carteiras')
+    await page.getByRole('button', { name: 'Adicionar' }).first().click()
+    const form = page.getByRole('form', { name: 'Carteira secundária' })
+    await form.getByLabel('Apelido da carteira *').fill('Reserva')
+    await form.getByLabel('Endereço da carteira *').fill('0x123')
+    await form.getByRole('button', { name: 'Salvar carteira secundária' }).click()
+    await expect(form.getByText('Use um endereço 0x')).toBeVisible()
+    await form.getByLabel('Endereço da carteira *').fill(`0x${'a'.repeat(40)}`)
+    await form.locator('#secondary-network').click()
+    await page.getByRole('option', { name: 'Polygon' }).click()
+    await form.locator('#secondary-type').click()
+    await page.getByRole('option', { name: 'Coinbase Wallet' }).click()
+    await form.getByLabel('Código de indicação *').fill('KURIO-2026')
+    await form.getByRole('button', { name: 'Salvar carteira secundária' }).click()
+    await expect(page.getByText('Carteira salva')).toBeVisible()
+    await page.getByRole('button', { name: 'Remover', exact: true }).click()
+    await expect(page.getByText('Você ainda não adicionou uma carteira secundária.')).toBeVisible()
+  })
+
+  test('avatar can be uploaded and removed', async ({ page }) => {
+    await open(page)
+    await login(page, ANA)
+    await page.goto('/perfil')
+    const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'base64')
+    await page.getByLabel('Escolher avatar').setInputFiles({ name: 'avatar.png', mimeType: 'image/png', buffer: png })
+    await expect(page.getByRole('img', { name: 'Seu avatar' })).toBeVisible()
+    await page.reload()
+    await expect(page.getByRole('img', { name: 'Seu avatar' })).toBeVisible()
+    await page.getByRole('button', { name: 'Remover', exact: true }).click()
+    await expect(page.getByRole('img', { name: 'Seu avatar' })).toBeHidden()
+  })
+})
