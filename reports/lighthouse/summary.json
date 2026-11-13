@@ -9,7 +9,7 @@
     "lighthouse": "12.8.2",
     "axeCore": "4.14.0",
     "chrome": "Chrome/158.0.0.0",
-    "benchmarkIndex": 974,
+    "benchmarkIndex": 956.5,
     "throttlingMethod": "simulate",
     "mobileThrottling": {
       "rttMs": 150,
@@ -20,7 +20,7 @@
     "platform": "Linux 6.17.0-35-generic x64",
     "cpus": "4x Intel(R) Core(TM) i5-2410M CPU @ 2.30GHz",
     "memoryGb": 8,
-    "measuredAt": "2026-11-13T20:00:38.940Z"
+    "measuredAt": "2026-11-13T21:07:20.099Z"
   },
   "results": [
     {
@@ -28,41 +28,41 @@
       "formFactor": "mobile",
       "runs": [
         {
-          "performance": 61,
+          "performance": 60,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 3810.52835,
+          "lcp": 4248.385,
           "cls": 0,
-          "tbt": 1003.5000000000009
+          "tbt": 789.6024999999997
         },
         {
-          "performance": 62,
+          "performance": 66,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 3795.4227000000005,
+          "lcp": 3975.1890000000003,
           "cls": 0,
-          "tbt": 954.4295499999998
+          "tbt": 592.4685000000004
         },
         {
-          "performance": 63,
+          "performance": 64,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 3783.5430499999998,
+          "lcp": 3898.06445,
           "cls": 0,
-          "tbt": 871.7428249999998
+          "tbt": 701.4999999999995
         }
       ],
       "median": {
-        "performance": 62,
+        "performance": 64,
         "accessibility": 100,
         "bestPractices": 100,
         "seo": 92,
-        "lcp": 3795.4227000000005,
+        "lcp": 3975.1890000000003,
         "cls": 0,
-        "tbt": 954.4295499999998
+        "tbt": 701.4999999999995
       }
     },
     {
@@ -70,41 +70,41 @@
       "formFactor": "desktop",
       "runs": [
         {
-          "performance": 99,
+          "performance": 98,
           "accessibility": 97,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 743.87275,
+          "lcp": 891.7464999999999,
           "cls": 0.0001310816654892597,
-          "tbt": 88.94675000000007
+          "tbt": 95.49999999999989
         },
         {
-          "performance": 99,
+          "performance": 98,
           "accessibility": 97,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 847.4292750000001,
+          "lcp": 908.436,
           "cls": 0.0001310816654892597,
-          "tbt": 77.93867499999999
+          "tbt": 98.50000000000011
         },
         {
-          "performance": 99,
+          "performance": 97,
           "accessibility": 97,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 739.6660999999999,
+          "lcp": 910.008,
           "cls": 0.0001310816654892597,
-          "tbt": 75.04769999999996
+          "tbt": 105.668
         }
       ],
       "median": {
-        "performance": 99,
+        "performance": 98,
         "accessibility": 97,
         "bestPractices": 100,
         "seo": 92,
-        "lcp": 743.87275,
+        "lcp": 908.436,
         "cls": 0.0001310816654892597,
-        "tbt": 77.93867499999999
+        "tbt": 98.50000000000011
       }
     },
     {
@@ -112,41 +112,41 @@
       "formFactor": "mobile",
       "runs": [
         {
-          "performance": 70,
+          "performance": 63,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 3813.613025,
+          "lcp": 4309.6122000000005,
           "cls": 0,
-          "tbt": 475.912425
+          "tbt": 546.5
         },
         {
-          "performance": 68,
+          "performance": 65,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 3697.546225,
+          "lcp": 4230.8802000000005,
           "cls": 0,
-          "tbt": 587.5000000000002
+          "tbt": 522.0000000000002
         },
         {
-          "performance": 70,
+          "performance": 65,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 3689.8323250000003,
+          "lcp": 4277.509599999999,
           "cls": 0,
-          "tbt": 512.0000000000002
+          "tbt": 505
         }
       ],
       "median": {
-        "performance": 70,
+        "performance": 65,
         "accessibility": 100,
         "bestPractices": 100,
         "seo": 92,
-        "lcp": 3697.546225,
+        "lcp": 4277.509599999999,
         "cls": 0,
-        "tbt": 512.0000000000002
+        "tbt": 522.0000000000002
       }
     },
     {
@@ -154,41 +154,41 @@
       "formFactor": "desktop",
       "runs": [
         {
-          "performance": 99,
+          "performance": 98,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 835.583725,
+          "lcp": 961.20905,
           "cls": 0,
-          "tbt": 41.5
+          "tbt": 60.254549999999995
         },
         {
-          "performance": 99,
+          "performance": 98,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 869.5248999999999,
+          "lcp": 976.596225,
           "cls": 0,
-          "tbt": 55.999999999999886
+          "tbt": 72.65597499999996
         },
         {
-          "performance": 99,
+          "performance": 92,
           "accessibility": 100,
           "bestPractices": 100,
           "seo": 92,
-          "lcp": 850.4091250000001,
+          "lcp": 1214.84575,
           "cls": 0,
-          "tbt": 46.5
+          "tbt": 166.50000000000006
         }
       ],
       "median": {
-        "performance": 99,
+        "performance": 98,
         "accessibility": 100,
         "bestPractices": 100,
         "seo": 92,
-        "lcp": 850.4091250000001,
+        "lcp": 976.596225,
         "cls": 0,
-        "tbt": 46.5
+        "tbt": 72.65597499999996
       }
     }
   ]
