@@ -28,9 +28,9 @@ export function CarouselDots({ count, index, onSelect, label, variant = 'filled'
           <span
             aria-hidden="true"
             className={cn(
-              'block rounded-full transition-opacity',
+              'block rounded-full transition-[opacity,transform,background-color] duration-300 motion-reduce:transition-none',
               variant === 'filled' ? 'h-2 w-2 bg-primary' : 'h-3 w-3 border-[1.5px] border-accent',
-              variant === 'filled' && dot !== index && 'opacity-45',
+              variant === 'filled' && (dot === index ? 'scale-125' : 'opacity-45'),
               variant === 'outline' && dot === index && 'bg-accent',
             )}
           />

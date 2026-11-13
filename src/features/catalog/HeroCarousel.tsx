@@ -58,6 +58,7 @@ const AUTOPLAY_MS = Number(import.meta.env.VITE_HERO_AUTOPLAY_MS ?? 6000)
  */
 function useHeroCarousel() {
   const [index, setIndex] = useState(0)
+  const [leaving, setLeaving] = useState<number | null>(null)
   const [ready, setReady] = useState(false)
   const [paused, setPaused] = useState(false)
   const reduced = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -71,11 +72,22 @@ function useHeroCarousel() {
 
   useEffect(() => {
     if (!ready || paused || reduced || AUTOPLAY_MS <= 0) return
-    const timer = window.setInterval(() => setIndex((current) => (current + 1) % count), AUTOPLAY_MS)
+    const timer = window.setInterval(() => go(index + 1), AUTOPLAY_MS)
     return () => window.clearInterval(timer)
   }, [ready, paused, reduced, count, index])
 
-  const go = (next: number) => setIndex(((next % count) + count) % count)
+  const go = (next: number) => {
+    const target = ((next % count) + count) % count
+    if (target === index) return
+    setLeaving(index)
+    setIndex(target)
+  }
+
+  useEffect(() => {
+    if (leaving === null) return
+    const timer = window.setTimeout(() => setLeaving(null), 900)
+    return () => window.clearTimeout(timer)
+  }, [leaving])
   const bind = {
     onMouseEnter: () => setPaused(true),
     onMouseLeave: () => setPaused(false),
@@ -98,18 +110,48 @@ function useHeroCarousel() {
       go(end < start ? index + 1 : index - 1)
     },
   }
-  return { index, go, ready, bind }
+  return { index, leaving, go, ready, bind }
 }
 
+type SlideState = 'active' | 'leaving' | 'idle'
+
 /**
- * One stacked slide: only the active slide is visible, focusable and announced.
+ * One stacked slide. The active slide sits on top and animates in, the previous one stays underneath, opaque, until the
+ * entrance finishes (so the artwork never turns translucent), and idle slides are hidden and not focusable.
  */
-function SlideFrame({ active, children, className }: { active: boolean; children: ReactNode; className?: string }) {
+function SlideFrame({ state, children }: { state: SlideState; children: ReactNode }) {
   return (
     <div
-      aria-hidden={!active}
-      inert={!active}
-      className={cn('col-start-1 row-start-1 transition-[opacity,transform] duration-500 motion-reduce:transition-none', active ? 'translate-x-0 opacity-100' : 'pointer-events-none translate-x-6 opacity-0', className)}
+      data-state={state}
+      aria-hidden={state !== 'active'}
+      inert={state !== 'active'}
+      className={cn('group/slide col-start-1 row-start-1', state === 'active' && 'relative z-10', state === 'leaving' && 'pointer-events-none relative z-0', state === 'idle' && 'invisible pointer-events-none')}
+    >
+      {children}
+    </div>
+  )
+}
+
+const EASE = 'ease-[cubic-bezier(0.22,0.8,0.3,1)]'
+
+const DELAYS = [
+  'group-data-[state=active]/slide:delay-[150ms]',
+  'group-data-[state=active]/slide:delay-[250ms]',
+  'group-data-[state=active]/slide:delay-[350ms]',
+  'group-data-[state=active]/slide:delay-[450ms]',
+]
+
+/**
+ * Staggered text entrance: fades up in order when the slide becomes active and fades out fast when it leaves.
+ */
+function Reveal({ order, children, className }: { order: 0 | 1 | 2 | 3; children: ReactNode; className?: string }) {
+  return (
+    <div
+      className={cn(
+        `translate-y-4 opacity-0 transition-[opacity,transform] duration-300 group-data-[state=active]/slide:translate-y-0 group-data-[state=active]/slide:opacity-100 group-data-[state=active]/slide:duration-700 group-data-[state=active]/slide:${EASE} motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none`,
+        DELAYS[order],
+        className,
+      )}
     >
       {children}
     </div>
@@ -117,93 +159,120 @@ function SlideFrame({ active, children, className }: { active: boolean; children
 }
 
 /**
+ * Artwork wrapper: the incoming image is revealed from the right with a gentle zoom while staying fully opaque.
+ */
+function ArtReveal({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <div
+      className={cn(
+        `overflow-hidden transition-[clip-path] duration-[900ms] motion-reduce:transition-none ${EASE} [clip-path:inset(0_0_0_100%)] group-data-[state=active]/slide:[clip-path:inset(0)] group-data-[state=leaving]/slide:[clip-path:inset(0)] group-data-[state=idle]/slide:transition-none`,
+        className,
+      )}
+    >
+      <div className={`h-full w-full scale-110 transition-transform duration-[1100ms] motion-reduce:transition-none ${EASE} group-data-[state=active]/slide:scale-100 group-data-[state=leaving]/slide:scale-100 group-data-[state=idle]/slide:transition-none motion-reduce:scale-100`}>{children}</div>
+    </div>
+  )
+}
+
+function stateOf(position: number, index: number, leaving: number | null): SlideState {
+  if (position === index) return 'active'
+  return position === leaving ? 'leaving' : 'idle'
+}
+
+/**
  * Desktop and tablet hero: a three slide carousel with the large artwork, title, text and call to action.
  */
 export function DesktopHero() {
-  const { index, go, ready, bind } = useHeroCarousel()
+  const { index, leaving, go, ready, bind } = useHeroCarousel()
   return (
     <section className="page-container mt-8 hidden md:block" aria-roledescription="carousel" aria-label="Destaques da Kurio" {...bind}>
       <div className="relative grid touch-pan-y md:min-h-[340px] lg:h-[450px]" aria-live="off">
         {SLIDES.map((slide, position) => {
           if (position > 0 && !ready) return null
-          const active = position === index
           const Heading = position === 0 ? 'h1' : 'h2'
           return (
-            <SlideFrame key={slide.main + position} active={active}>
+            <SlideFrame key={slide.main + position} state={stateOf(position, index, leaving)}>
               <div role="group" aria-roledescription="slide" aria-label={`${position + 1} de ${SLIDES.length}`} className="flex items-start justify-between gap-6 pl-10 pt-[43px] lg:gap-0">
                 <div className="flex min-w-0 flex-1 flex-col lg:w-[600px] lg:flex-none">
-                  <p className="text-base leading-4 tracking-[0.015em] text-fg">{slide.eyebrow}</p>
-                  <Heading id={position === 0 ? 'hero-title' : undefined} className="mt-2 text-[30px] font-bold leading-[44px] tracking-[-0.014em] text-fg-strong lg:text-[44px] lg:leading-[70px]">
-                    {slide.desktopTitle[0]}
-                    <br />
-                    {slide.desktopTitle[1]}
-                  </Heading>
-                  <p className="mt-1 max-w-[557px] text-sm leading-6 text-muted">{slide.desktopText}</p>
-                  <Button asChild variant="primary" size="hero" className="mt-8 w-[140px]">
-                    <a href="#catalogo">EXPLORAR</a>
-                  </Button>
+                  <Reveal order={0}>
+                    <p className="text-base leading-4 tracking-[0.015em] text-fg">{slide.eyebrow}</p>
+                  </Reveal>
+                  <Reveal order={1}>
+                    <Heading id={position === 0 ? 'hero-title' : undefined} className="mt-2 text-[30px] font-bold leading-[44px] tracking-[-0.014em] text-fg-strong lg:text-[44px] lg:leading-[70px]">
+                      {slide.desktopTitle[0]}
+                      <br />
+                      {slide.desktopTitle[1]}
+                    </Heading>
+                  </Reveal>
+                  <Reveal order={2}>
+                    <p className="mt-1 max-w-[557px] text-sm leading-6 text-muted">{slide.desktopText}</p>
+                  </Reveal>
+                  <Reveal order={3}>
+                    <Button asChild variant="primary" size="hero" className="mt-8 w-[140px]">
+                      <a href="#catalogo">EXPLORAR</a>
+                    </Button>
+                  </Reveal>
                 </div>
-                <div className="-mt-[43px] h-[300px] w-[300px] shrink-0 lg:h-[450px] lg:w-[450px]">
+                <ArtReveal className="-mt-[43px] h-[300px] w-[300px] shrink-0 rounded-[20px] lg:h-[450px] lg:w-[450px]">
                   <NftImage artwork={slide.main} alt={slide.alt} size={640} priority={position === 0} className="h-full rounded-[20px]" />
-                </div>
+                </ArtReveal>
               </div>
             </SlideFrame>
           )
         })}
-        <CarouselDots count={SLIDES.length} index={index} onSelect={go} label="Destaques" className="absolute bottom-6 left-10 lg:bottom-[35px] lg:left-[596px]" />
+        <CarouselDots count={SLIDES.length} index={index} onSelect={go} label="Destaques" className="absolute bottom-6 left-10 z-20 lg:bottom-[35px] lg:left-[596px]" />
       </div>
     </section>
   )
 }
 
 /**
- * Phone banner: the same carousel inside the rounded card, with the large and small artwork pair per slide.
+ * Phone banner: the design background (rounded card with two soft circles) stays fixed while the slides animate over it.
  */
 export function MobileBanner() {
-  const { index, go, ready, bind } = useHeroCarousel()
+  const { index, leaving, go, ready, bind } = useHeroCarousel()
   return (
-    <div className="relative mt-4 overflow-hidden rounded-3xl bg-gradient-to-br from-[#6b482c] to-[#46301f]" aria-roledescription="carousel" aria-label="Destaques da Kurio" {...bind}>
-      <span aria-hidden="true" className="absolute -left-10 top-[-60px] h-[330px] w-[330px] rounded-full bg-white/[0.04]" />
-      <span aria-hidden="true" className="absolute left-[120px] top-[-20px] h-[260px] w-[260px] rounded-full bg-white/[0.04]" />
+    <div className="relative mt-4 overflow-hidden rounded-[30px]" aria-roledescription="carousel" aria-label="Destaques da Kurio" {...bind}>
+      <img src="/assets/icons/hero-bg-mobile.svg" alt="" aria-hidden="true" className="absolute inset-0 h-full w-full max-w-none" draggable={false} />
       <div className="relative grid min-h-[190px] touch-pan-y" aria-live="off">
         {SLIDES.map((slide, position) => {
           if (position > 0 && !ready) return null
-          const active = position === index
           return (
-            <SlideFrame key={slide.main + position} active={active}>
+            <SlideFrame key={slide.main + position} state={stateOf(position, index, leaving)}>
               <div role="group" aria-roledescription="slide" aria-label={`${position + 1} de ${SLIDES.length}`} className="relative h-full">
                 <div className="relative pl-4 pt-1.5 max-[413px]:pb-9">
-                  <p className="text-xs leading-4 text-fg">{slide.eyebrow}</p>
-                  <h2 className="mt-1.5 max-w-[190px] text-lg font-bold leading-[29px] text-fg-strong max-[413px]:max-w-[min(190px,calc(100%-160px))] max-[374px]:max-w-[calc(100%-140px)]">
-                    {slide.mobileTitle[0]} {slide.mobileTitle[1]}
-                  </h2>
-                  <p className="mt-1.5 max-w-[188px] text-xs leading-[18px] text-muted max-[413px]:max-w-[min(188px,calc(100%-160px))] max-[374px]:max-w-[calc(100%-140px)]">{slide.mobileText}</p>
-                  <a href="#catalogo" className="flex h-4 w-fit items-center gap-2 text-xs font-bold leading-[14px] text-accent">
-                    EXPLORAR
-                    <span aria-hidden="true" className="relative block size-4">
-                      <img src="/assets/icons/hero-arrow.svg" alt="" width={9.53} height={11.5} className="absolute left-1/2 top-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 -rotate-90" draggable={false} />
-                    </span>
-                  </a>
+                  <Reveal order={0}>
+                    <p className="text-xs leading-4 text-fg">{slide.eyebrow}</p>
+                  </Reveal>
+                  <Reveal order={1}>
+                    <h2 className="mt-1.5 max-w-[190px] text-lg font-bold leading-[29px] text-fg-strong max-[413px]:max-w-[min(190px,calc(100%-160px))] max-[374px]:max-w-[calc(100%-140px)]">
+                      {slide.mobileTitle[0]} {slide.mobileTitle[1]}
+                    </h2>
+                  </Reveal>
+                  <Reveal order={2}>
+                    <p className="mt-1.5 max-w-[188px] text-xs leading-[18px] text-muted max-[413px]:max-w-[min(188px,calc(100%-160px))] max-[374px]:max-w-[calc(100%-140px)]">{slide.mobileText}</p>
+                  </Reveal>
+                  <Reveal order={3}>
+                    <a href="#catalogo" className="flex h-4 w-fit items-center gap-2 text-xs font-bold leading-[14px] text-accent">
+                      EXPLORAR
+                      <span aria-hidden="true" className="relative block size-4">
+                        <img src="/assets/icons/hero-arrow.svg" alt="" width={9.53} height={11.5} className="absolute left-1/2 top-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 -rotate-90" draggable={false} />
+                      </span>
+                    </a>
+                  </Reveal>
                 </div>
-                <NftImage
-                  artwork={slide.main}
-                  alt={slide.alt.replace(', arte em destaque', '')}
-                  size={320}
-                  priority={position === 0}
-                  className="absolute right-4 top-2.5 h-[139px] w-[138px] rounded-2xl object-cover max-[413px]:h-[120px] max-[413px]:w-[120px] max-[374px]:h-[100px] max-[374px]:w-[100px]"
-                />
-                <NftImage
-                  artwork={slide.small}
-                  alt=""
-                  size={320}
-                  className="absolute right-[82px] top-[98px] h-[59px] w-[58px] rounded-2xl object-cover max-[413px]:right-[72px] max-[413px]:top-[86px] max-[413px]:h-[50px] max-[413px]:w-[50px] max-[374px]:right-16 max-[374px]:top-[74px] max-[374px]:h-[42px] max-[374px]:w-[42px]"
-                />
+                <ArtReveal className="absolute right-4 top-2.5 h-[139px] w-[138px] rounded-2xl max-[413px]:h-[120px] max-[413px]:w-[120px] max-[374px]:h-[100px] max-[374px]:w-[100px]">
+                  <NftImage artwork={slide.main} alt={slide.alt.replace(', arte em destaque', '')} size={320} priority={position === 0} className="h-full rounded-2xl object-cover" />
+                </ArtReveal>
+                <ArtReveal className="absolute right-[82px] top-[98px] h-[59px] w-[58px] rounded-2xl max-[413px]:right-[72px] max-[413px]:top-[86px] max-[413px]:h-[50px] max-[413px]:w-[50px] max-[374px]:right-16 max-[374px]:top-[74px] max-[374px]:h-[42px] max-[374px]:w-[42px]">
+                  <NftImage artwork={slide.small} alt="" size={320} className="h-full rounded-2xl object-cover" />
+                </ArtReveal>
               </div>
             </SlideFrame>
           )
         })}
       </div>
-      <CarouselDots count={SLIDES.length} index={index} onSelect={go} label="Destaques" className="absolute inset-x-0 bottom-[-3px] justify-center" />
+      <CarouselDots count={SLIDES.length} index={index} onSelect={go} label="Destaques" className="absolute inset-x-0 bottom-[-3px] z-20 justify-center" />
     </div>
   )
 }
