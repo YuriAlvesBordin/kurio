@@ -8,7 +8,9 @@ import desktopConfig from 'lighthouse/core/config/desktop-config.js'
 
 const config = JSON.parse(await readFile(new URL('../lighthouse/config.json', import.meta.url), 'utf8'))
 const chromePath = process.env.CHROME_PATH || '/usr/bin/google-chrome'
-const base = `http://127.0.0.1:${config.port}`
+const remote = process.env.LH_BASE_URL
+const base = remote ?? `http://127.0.0.1:${config.port}`
+const outputDir = process.env.LH_OUT_DIR ?? config.outputDir
 
 /**
  * Computes the median of a list of numbers.
@@ -71,8 +73,8 @@ async function audit(url, formFactor) {
   }
 }
 
-await mkdir(config.outputDir, { recursive: true })
-const server = await startServer()
+await mkdir(outputDir, { recursive: true })
+const server = remote ? null : await startServer()
 const summary = []
 let environment = null
 try {
@@ -95,7 +97,7 @@ try {
           memoryGb: Math.round(os.totalmem() / 2 ** 30),
           measuredAt: lhr.fetchTime,
         }
-        const stem = `${config.outputDir}/${page.id}-${formFactor}-run${run}`
+        const stem = `${outputDir}/${page.id}-${formFactor}-run${run}`
         await writeFile(`${stem}.json`, result.report[0])
         await writeFile(`${stem}.html`, result.report[1])
         samples.push({
@@ -115,7 +117,7 @@ try {
     }
   }
 } finally {
-  stopServer(server)
+  if (server) stopServer(server)
 }
 
 const rows = summary.map((entry) => {
@@ -123,18 +125,18 @@ const rows = summary.map((entry) => {
   return `| ${entry.page} | ${entry.formFactor} | ${m.performance} | ${m.accessibility} | ${m.bestPractices} | ${m.seo} | ${Math.round(m.lcp)} ms | ${m.cls.toFixed(3)} | ${Math.round(m.tbt)} ms |`
 })
 const table = ['| Página | Dispositivo | Performance | Acessibilidade | Boas práticas | SEO | LCP | CLS | TBT |', '| --- | --- | --- | --- | --- | --- | --- | --- | --- |', ...rows].join('\n')
-await writeFile(`${config.outputDir}/summary.json`, JSON.stringify({ targets: config.targets, environment, results: summary }, null, 2))
+await writeFile(`${outputDir}/summary.json`, JSON.stringify({ targets: config.targets, environment, results: summary }, null, 2))
 const notes = [
   '',
   '## Ambiente e condições de execução',
   '',
   `- Lighthouse ${environment.lighthouse} (axe-core ${environment.axeCore}), ${environment.chrome} headless, Node ${environment.node}`,
   `- Sistema: ${environment.platform}, ${environment.cpus}, ${environment.memoryGb} GB de RAM, benchmarkIndex ${Math.round(environment.benchmarkIndex)}`,
-  `- Alvo: build de produção (npm run build) servido por vite preview em 127.0.0.1, cenário padrão dos mocks, sem simplificações de imagem, fonte ou funcionalidade`,
+  `- Alvo: ${remote ? `site publicado em ${remote} (Vercel, Brotli e HTTP/2)` : 'build de produção (npm run build) servido por vite preview em 127.0.0.1'}, cenário padrão dos mocks, sem simplificações de imagem, fonte ou funcionalidade`,
   `- Throttling ${environment.throttlingMethod}: mobile com RTT 150 ms, 1638 kbps e CPU 4x mais lenta, desktop com o perfil padrão do Lighthouse`,
   `- ${config.runs} medições por página e perfil, mediana por categoria. Medido em ${environment.measuredAt}`,
   '- Metas: ' + Object.entries(config.targets).map(([key, value]) => `${key} >= ${value}`).join(', '),
   '',
 ]
-await writeFile(`${config.outputDir}/summary.md`, `${table}\n${notes.join('\n')}`)
+await writeFile(`${outputDir}/summary.md`, `${table}\n${notes.join('\n')}`)
 console.log(table)

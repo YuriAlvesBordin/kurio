@@ -129,6 +129,15 @@ Medianas da última execução (Lighthouse 12.8.2, Chrome 153 headless, throttli
 | Detalhe | mobile | 66 | 100 | 100 | 92 | 4278 ms | 0 | 451 ms |
 | Detalhe | desktop | 98 | 100 | 100 | 92 | 1022 ms | 0 | 50 ms |
 
+Mesma auditoria (3 medições, mediana) contra o **site publicado no Vercel** (Brotli e HTTP/2 pela CDN), que é o ambiente real da entrega. Comando: `LH_BASE_URL=https://kurio-woad.vercel.app LH_OUT_DIR=reports/lighthouse-production npm run lighthouse`. Os JSON e o `summary.md` ficam em `reports/lighthouse-production`.
+
+| Página | Dispositivo | Performance | Acessibilidade | Boas práticas | SEO | LCP | CLS | TBT |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Início | mobile | 72 | 100 | 100 | 92 | 3083 ms | 0 | 683 ms |
+| Início | desktop | 99 | 97 | 100 | 92 | 711 ms | 0 | 62 ms |
+| Detalhe | mobile | 69 | 100 | 100 | 92 | 3291 ms | 0 | 780 ms |
+| Detalhe | desktop | 99 | 100 | 100 | 92 | 743 ms | 0 | 34 ms |
+
 Todas as metas foram atingidas, exceto a Performance no mobile, que ficou abaixo de 90. O motivo é o JavaScript do caminho crítico: o bundle do app soma cerca de 185 kB gzip e o MSW roda no navegador e soma cerca de 54 kB gzip (eram 110 kB antes de trocar o cookie jar do MSW por um módulo mínimo, veja `ARCHITECTURE.md`), e o Lighthouse mobile avalia com CPU 4 vezes mais lenta. Isso eleva o TBT (450 a 740 ms) e atrasa o LCP (cerca de 4 s). Um perfil de CPU com throttling 4x mostrou o custo espalhado entre o app, o MSW e o TanStack, sem um ponto quente único. O CLS é zero. As mitigações já aplicadas foram: rotas em chunks separados, Socket.IO e o diálogo de autenticação carregados sob demanda, carregamento do MSW em paralelo ao app (as requisições esperam um portão de rede), preload do módulo de mocks e skeletons com altura estável. Uma API real dispensaria o MSW e eliminaria essa diferença, mas a auditoria usa o cenário padrão dos mocks, sem simplificações. Os números variam com a carga da máquina (esta é uma CPU antiga de 4 núcleos): execuções anteriores do mobile variaram entre 58 e 70, e execuções sobrepostas a outros processos chegam a resultados inválidos, por isso a auditoria deve rodar com a máquina ociosa.
 
 ## Deploy
