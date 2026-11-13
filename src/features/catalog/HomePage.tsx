@@ -113,10 +113,13 @@ export function HomePage() {
           <span aria-hidden="true" className="absolute left-[120px] top-[-20px] h-[260px] w-[260px] rounded-full bg-white/[0.04]" />
           <div className="relative pl-4 pt-1.5">
             <p className="text-xs leading-4 text-fg">Bem-vindo à Kurio</p>
-            <h2 className="mt-[5px] max-w-[190px] text-lg font-bold leading-7 text-fg-strong">SEJA DONO DA CULTURA DIGITAL</h2>
-            <p className="mt-2 max-w-[190px] text-xs leading-[18px] text-muted">Descubra NFTs selecionados de criadores do mundo todo.</p>
-            <a href="#catalogo" className="-mt-1 inline-flex items-center gap-2 text-xs font-bold leading-4 text-accent">
-              EXPLORAR <span aria-hidden="true">→</span>
+            <h2 className="mt-1.5 max-w-[190px] text-lg font-bold leading-[29px] text-fg-strong">SEJA DONO DA CULTURA DIGITAL</h2>
+            <p className="mt-1.5 max-w-[188px] text-xs leading-[18px] text-muted">Descubra NFTs selecionados de criadores do mundo todo.</p>
+            <a href="#catalogo" className="flex h-4 w-fit items-center gap-2 text-xs font-bold leading-[14px] text-accent">
+              EXPLORAR
+              <span aria-hidden="true" className="relative block size-4">
+                <img src="/assets/icons/hero-arrow.svg" alt="" width={9.53} height={11.5} className="absolute left-1/2 top-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 -rotate-90" draggable={false} />
+              </span>
             </a>
           </div>
           <NftImage artwork="ape-varsity" alt="Macaco de óculos escuros e jaqueta verde" size={320} priority className="absolute right-4 top-2.5 h-[139px] w-[138px] rounded-2xl" />
