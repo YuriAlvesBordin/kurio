@@ -3,6 +3,7 @@ import { ANA, addToCart, login, open } from './helpers'
 
 test.describe('visual regression', () => {
   test('Início', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
     await open(page)
     await expect(page.getByTestId('nft-card').first()).toBeVisible()
     await page.waitForLoadState('networkidle')
