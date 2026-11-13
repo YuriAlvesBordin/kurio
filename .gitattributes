@@ -1,0 +1,5 @@
+reports/** linguist-generated
+playwright-report/** linguist-generated
+e2e/__screenshots__/** linguist-generated
+public/mockServiceWorker.js linguist-vendored
+package-lock.json linguist-generated
