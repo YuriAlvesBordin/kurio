@@ -23,7 +23,7 @@ export function CarouselDots({ count, index, onSelect, label, variant = 'filled'
           aria-label={`Ir para ${dot + 1} de ${count}`}
           aria-current={dot === index ? 'true' : undefined}
           onClick={() => onSelect(dot)}
-          className="group flex h-6 w-4 items-center justify-center"
+          className="group flex h-6 w-6 items-center justify-center"
         >
           <span
             aria-hidden="true"

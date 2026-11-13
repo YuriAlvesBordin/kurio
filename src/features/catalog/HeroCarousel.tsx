@@ -220,7 +220,7 @@ export function DesktopHero() {
             </SlideFrame>
           )
         })}
-        <CarouselDots count={SLIDES.length} index={index} onSelect={go} label="Destaques" className="absolute bottom-6 left-10 z-20 lg:bottom-[35px] lg:left-[596px]" />
+        <CarouselDots count={SLIDES.length} index={index} onSelect={go} label="Destaques" className="absolute bottom-6 left-10 z-20 lg:bottom-[35px] lg:left-[584px]" />
       </div>
     </section>
   )
