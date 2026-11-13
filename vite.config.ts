@@ -24,7 +24,10 @@ function preloadMocks(): Plugin {
 export default defineConfig({
   plugins: [react(), tailwindcss(), preloadMocks()],
   resolve: {
-    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      'tough-cookie': fileURLToPath(new URL('./src/mocks/shims/tough-cookie.ts', import.meta.url)),
+    },
   },
   build: {
     sourcemap: false,
